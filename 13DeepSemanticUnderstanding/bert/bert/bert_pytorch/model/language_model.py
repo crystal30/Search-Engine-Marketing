@@ -23,7 +23,7 @@ class BERTLM(nn.Module):
         self.mask_criterion = nn.NLLLoss(ignore_index=0)
         self.next_criterion = nn.NLLLoss()
 
-    # data["bert_input"], data["segment_label"], data["bert_label"], data["is_next"]
+
     def forward(self, x, segment_label, mask_label, target_label):
         x = self.bert(x, segment_label)
         next_sent_output = self.next_sentence(x)
@@ -46,7 +46,7 @@ class NextSentencePrediction(nn.Module):
         super().__init__()
         self.linear = nn.Linear(hidden, 2)
         self.softmax = nn.LogSoftmax(dim=-1)
-    # x[:, 0] 是 CLS，CLS就涵盖了整句话的信息
+
     def forward(self, x):
         return self.softmax(self.linear(x[:, 0]))
 

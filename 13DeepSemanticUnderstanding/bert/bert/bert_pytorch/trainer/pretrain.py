@@ -9,9 +9,6 @@ from .optim_schedule import ScheduledOptim
 import tqdm
 import os
 
-torch.cuda.empty_cache()
-torch.cuda.memory_summary(device=None, abbreviated=False)
-
 
 class BERTTrainer:
     """
@@ -90,7 +87,6 @@ class BERTTrainer:
     def train(self, epoch):
         self.iteration(epoch, self.train_data)
 
-    @torch.no_grad()
     def test(self, epoch):
         self.iteration(epoch, self.test_data, train=False)
 
@@ -116,7 +112,7 @@ class BERTTrainer:
             loss = next_loss + mask_loss
 
             avg_loss += loss.item()
-            avg_mask_loss += mask_loss.item()
+            avg_mask_loss += mask_loss.item();
             avg_next_loss += next_loss.item()
             total_correct += correct
             total_element += data["is_next"].nelement()
@@ -155,8 +151,6 @@ class BERTTrainer:
 
         for i, data in data_iter:
             data = {key: value.to(self.device) for key, value in data.items()}
-            torch.cuda.empty_cache()
-            torch.cuda.memory_summary(device=None, abbreviated=False)
             mask_loss, next_loss, correct = self.model.forward(data["bert_input"], data["segment_label"], data["bert_label"], data["is_next"])
             mask_loss = mask_loss.mean()
             next_loss = next_loss.mean()
@@ -172,7 +166,7 @@ class BERTTrainer:
 
             # next sentence prediction accuracy
             avg_loss += loss.item()
-            avg_mask_loss += mask_loss.item()
+            avg_mask_loss += mask_loss.item();
             avg_next_loss += next_loss.item()
             total_correct += correct.item()
             total_element += data["is_next"].nelement()
@@ -213,7 +207,7 @@ class BERTTrainer:
         if not os.path.exists(dname):
             os.mkdir(dname)
 
-        output_path = os.path.join(file_path + ".bertlm.epoch.%d.%s" % (epoch, msg))
+        output_path = file_path + ".bertlm.epoch.%d.%s" % (epoch, msg)
         if self.cuda_devices > 1:
             torch.save(self.model.module.state_dict(), output_path)
         else:

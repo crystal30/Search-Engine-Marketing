@@ -5,7 +5,7 @@ test_data=./Test/data/pretrain/corpus.test
 vocab=./Test/data/pretrain/vocab
 output=./Test/output.1
 
-python3 $basedir/bert/runbert/pretrain.py -i gbk \
+python $basedir/bert/runbert/pretrain.py -i gbk \
     -c $train_data \
     -t $test_data \
     -v $vocab \

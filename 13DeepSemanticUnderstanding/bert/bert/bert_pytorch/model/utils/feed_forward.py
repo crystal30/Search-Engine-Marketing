@@ -13,9 +13,4 @@ class PositionwiseFeedForward(nn.Module):
         self.activation = GELU()
 
     def forward(self, x):
-        x = self.w_1(x)
-        x = self.activation(x)
-        x = self.dropout(x)
-        x = self.w_2(x)
-        return x
-        # return self.w_2(self.dropout(self.activation(self.w_1(x))))
+        return self.w_2(self.dropout(self.activation(self.w_1(x))))

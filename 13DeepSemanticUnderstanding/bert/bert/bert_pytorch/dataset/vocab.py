@@ -93,8 +93,8 @@ class Vocab(TorchVocab):
     def __init__(self, counter, max_size=None, min_freq=1):
         self.pad_index = 0
         self.unk_index = 1
-        self.eos_index = 2  # cls  Classification Token
-        self.sos_index = 3  # sep
+        self.eos_index = 2
+        self.sos_index = 3
         self.mask_index = 4
         super().__init__(counter, specials=["<pad>", "<unk>", "<eos>", "<sos>", "<mask>"],
                          max_size=max_size, min_freq=min_freq)
@@ -170,28 +170,16 @@ class WordVocab(Vocab):
 def build():
     import argparse
 
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("-c", "--corpus_path", required=True, type=str)
-    # parser.add_argument("-o", "--output_path", required=True, type=str)
-    # parser.add_argument("-s", "--vocab_size", type=int, default=None)
-    # parser.add_argument("-e", "--encoding", type=str, default="utf-8")
-    # parser.add_argument("-m", "--min_freq", type=int, default=1)
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--corpus_path", required=True, type=str)
+    parser.add_argument("-o", "--output_path", required=True, type=str)
+    parser.add_argument("-s", "--vocab_size", type=int, default=None)
+    parser.add_argument("-e", "--encoding", type=str, default="utf-8")
+    parser.add_argument("-m", "--min_freq", type=int, default=1)
+    args = parser.parse_args()
 
-
-    # with open(args.corpus_path, "r", encoding=args.encoding, errors='ignore') as f:
-    #     vocab = WordVocab(f, max_size=args.vocab_size, min_freq=args.min_freq)
-
-    # print("VOCAB SIZE:", len(vocab))
-    # vocab.save_vocab(args.output_path)
-
-    corpus_path = "/root/autodl-tmp/data/News2022_doc.tsv"
-    output_path = "/Bert/bert/Test/data/pretrain/vocab"
-    encoding = 'gbk'
-    vocab_size = 28198
-    min_freq = 2000
-    with open(corpus_path, "r", encoding=encoding, errors='ignore') as f:
-        vocab = WordVocab(f, max_size=vocab_size, min_freq=min_freq)
+    with open(args.corpus_path, "r", encoding=args.encoding, errors='ignore') as f:
+        vocab = WordVocab(f, max_size=args.vocab_size, min_freq=args.min_freq)
 
     print("VOCAB SIZE:", len(vocab))
-    vocab.save_vocab(output_path)
+    vocab.save_vocab(args.output_path)

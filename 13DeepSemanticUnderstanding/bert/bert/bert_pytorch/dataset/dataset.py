@@ -14,7 +14,7 @@ class BERTDataset(Dataset):
         self.corpus_path = corpus_path
         self.encoding = encoding
 
-        with open(corpus_path, "r", encoding=encoding, errors='ignore') as f:
+        with open(corpus_path, "r", encoding=encoding,errors='ignore') as f:
             if self.corpus_lines is None and not on_memory:
                 self.corpus_lines = 0
                 for _ in tqdm.tqdm(f, desc="Loading Dataset", total=corpus_lines):
@@ -81,7 +81,7 @@ class BERTDataset(Dataset):
                 # 10% randomly change token to current token
                 else:
                     tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)
-                # ？
+
                 output_label.append(self.vocab.stoi.get(token, self.vocab.unk_index))
 
             else:
@@ -125,7 +125,6 @@ class BERTDataset(Dataset):
                 self.random_file.__next__()
             line = self.random_file.__next__()
         return line[:-1].split("\t")[1]
-
 
 class DownstreamDataset(Dataset):
     def __init__(self, corpus_path, vocab, seq_len, encoding="utf-8", corpus_lines=None, on_memory=True, label_separator=1, shuffle=False):

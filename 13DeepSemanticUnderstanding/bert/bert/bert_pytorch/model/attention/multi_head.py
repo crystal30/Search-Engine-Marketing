@@ -8,8 +8,6 @@ class MultiHeadedAttention(nn.Module):
     """
 
     def __init__(self, h, d_model, dropout=0.1):
-        # h: attention heads
-        # d_model: hidden
         super().__init__()
         assert d_model % h == 0
 
